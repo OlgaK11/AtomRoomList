@@ -1,0 +1,178 @@
+﻿<controls:AtomWindow x:Class="AtomRoomList.Views.MainWindow"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:viewmodels="clr-namespace:AtomRoomList.ViewModels"
+                     xmlns:wpf="clr-namespace:AtomStyle.Additional;assembly=AtomStyle"
+                     xmlns:views="clr-namespace:AtomRoomList.Views"
+                     xmlns:models="clr-namespace:AtomRoomList.Models"
+                     xmlns:controls="clr-namespace:AtomStyle.Controls;assembly=AtomStyle"
+                     d:DataContext="{d:DesignInstance Type=viewmodels:BaseVM}"
+                     mc:Ignorable="d"
+                     ShowSettingsButton="False"
+                     ShowHelpButton="False"
+                     Title="Список помещений"
+                     Loaded="AtomWindow_Loaded"
+                     Height="674" Width="780">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <HierarchicalDataTemplate x:Key="HeaderDataTemplate"
+                                      DataType="{x:Type models:AtomLevel}"
+                                      ItemsSource="{Binding Path=Items}">
+                <StackPanel Orientation="Horizontal"
+                            RequestBringIntoView="TreeViewItem_RequestBringIntoView">
+                    <CheckBox Content="{Binding Path=Name}"
+                              IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </HierarchicalDataTemplate>
+
+            <HierarchicalDataTemplate x:Key="ItemDataTemplate"
+                                      DataType="{x:Type models:AtomFloorType}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal"
+                                RequestBringIntoView="TreeViewItem_RequestBringIntoView">
+                        <CheckBox IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Content="{Binding Path=Name}"
+                                  Margin="4 0 0 0" />
+
+                        <TextBlock Text="{Binding StringFormat=Полов: {0}, Path=AtomFloors.Count}"
+                                   VerticalAlignment="Center"
+                                   Margin="8 0 0 0"
+                                   Foreground="{StaticResource AtomGray700Brush}"
+                                   Style="{StaticResource AtomRegularTextBlock}" />
+                    </StackPanel>
+                </Grid>
+            </HierarchicalDataTemplate>
+
+            <views:FloorItemDataTemplateSelector x:Key="ItemTemplateSelector"
+                                                 HeaderDataTemplate="{StaticResource HeaderDataTemplate}"
+                                                 ItemDataTemplate="{StaticResource ItemDataTemplate}" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.Style>
+        <DynamicResource ResourceKey="AtomMainWindow" />
+    </Window.Style>
+
+    <controls:AtomWindow.Snackbars>
+        <controls:AtomSnackbars DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=controls:AtomWindow}}">
+            <wpf:Snackbar IsActive="{Binding IsSnackbarActive}">
+                <wpf:SnackbarMessage>
+                    <StackPanel Orientation="Horizontal">
+                        <Grid>
+                            <Border Background="{StaticResource AtomWhiteBrush}"
+                                    Width="12"
+                                    Height="12"
+                                    CornerRadius="6"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center" />
+
+                            <wpf:AtomPackIcon Kind="Success"
+                                              Foreground="{StaticResource AtomGreenBrush}" />
+                        </Grid>
+
+                        <TextBlock Text="{Binding SnackbarText}"
+                                   Margin="8 0 0 0"
+                                   VerticalAlignment="Center"
+                                   Foreground="{StaticResource AtomWhiteBrush}"
+                                   Style="{StaticResource AtomRegularTextBlock}" />
+                    </StackPanel>
+                </wpf:SnackbarMessage>
+            </wpf:Snackbar>
+        </controls:AtomSnackbars>
+    </controls:AtomWindow.Snackbars>
+
+    <Grid Margin="0 16 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Этажи"
+                  Style="{StaticResource AtomGroupBox}">
+            <TreeView Name="libraryTreeView"
+                      Margin="16 0 4 4"
+                      ItemTemplateSelector="{StaticResource ItemTemplateSelector}"
+                      ItemsSource="{Binding Path=AtomLevels}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource AtomTreeViewItem}" TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="TreeViewItem.IsExpanded" Value="{Binding Path=IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </TreeView>
+        </GroupBox>
+
+        <controls:AtomSelectionControl Grid.Row="1"
+                                       Margin="0 4 0 0"
+                                       VerticalAlignment="Top"
+                                       SelectAllCommand="{Binding SelectAllLevelsDelegateCommand}"
+                                       UnselectAllCommand="{Binding UnselectAllLevelsDelegateCommand}" />
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0 8 0 0">
+            <TextBlock Text="{Binding StringFormat=Выбрано типов: {0}, Path=SelectedAtomFloorTypes.Count}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource AtomMediumTextBlock}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedAtomFloorTypes.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2"
+                    Margin="0 8 0 0">
+            <TextBlock Text="Способ записи списка помещений:"
+                       Style="{StaticResource AtomRegularTextBlock}" />
+
+            <RadioButton x:Name="oneRadioButton"
+                         IsChecked="{Binding NumberOptionType}"
+                         GroupName="group"
+                         Margin="0 4 0 0"
+                         Content="Номер"
+                         Style="{StaticResource AtomRadioButton}" />
+
+            <RadioButton x:Name="twoRadioButton"
+                         IsChecked="{Binding NameNumberOptionType}"
+                         GroupName="group"
+                         Content="Имя (Номер)"
+                         Style="{StaticResource AtomRadioButton}" />
+
+            <RadioButton x:Name="threeRadioButton"
+                         IsChecked="{Binding CommentOptionType}"
+                         GroupName="group"
+                         Visibility="Collapsed"
+                         Content="Комментарий"
+                         Style="{StaticResource AtomRadioButton}" />
+        </StackPanel>
+
+        <Button Grid.Row="3"
+                Width="0"
+                HorizontalAlignment="Center"
+                IsCancel="True" />
+
+        <StackPanel Grid.Row="3"
+                    Margin="0 24 0 0"
+                    HorizontalAlignment="Center">
+            <Button x:Name="PART_AltCloseButton"
+                    Content="Записать"
+                    IsDefault="True"
+                    Command="{Binding WriteDataDelegateCommand}"
+                    Style="{StaticResource AtomGreenButton}" />
+        </StackPanel>
+    </Grid>
+</controls:AtomWindow>

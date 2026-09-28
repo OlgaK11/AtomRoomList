@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6A407BB9-D3C4-471F-80FD-6343F35B3EF6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AtomRoomList</RootNamespace>
+    <AssemblyName>AtomRoomList</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'R2020|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\R2020\</OutputPath>
+    <DefineConstants>DEBUG;R2020</DefineConstants>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <AssemblyName>AtomRoomList_2020</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'R2022|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\R2022\</OutputPath>
+    <DefineConstants>DEBUG;R2022</DefineConstants>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <AssemblyName>AtomRoomList_2022</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AtomAPI">
+      <HintPath>P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\02_REVIT_MANAGER\Extensions\AtomAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="AtomPluginServices, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\02_REVIT_MANAGER\Extensions\AtomPluginServices.dll</HintPath>
+    </Reference>
+    <Reference Include="AtomStyle">
+      <HintPath>P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\02_REVIT_MANAGER\Extensions\AtomStyle.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RevitAPI">
+      <HintPath>С:\Program Files\Autodesk\Revit 2020\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>С:\Program Files\Autodesk\Revit 2020\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <Choose>
+    <When Condition=" '$(Configuration)'=='R2020' ">
+      <ItemGroup>
+        <Reference Include="RevitAPI">
+          <HintPath>C:\Program Files\Autodesk\Revit 2020\RevitAPI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="RevitAPIUI">
+          <HintPath>C:\Program Files\Autodesk\Revit 2020\RevitAPIUI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AdWindows">
+          <HintPath>C:\Program Files\Autodesk\Revit 2020\AdWindows.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AtomRevitAPI_2020">
+          <HintPath>P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\02_REVIT_MANAGER\Extensions\AtomRevitAPI_2020.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition=" '$(Configuration)'=='R2022' ">
+      <ItemGroup>
+        <Reference Include="RevitAPI">
+          <HintPath>C:\Program Files\Autodesk\Revit 2022\RevitAPI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="RevitAPIUI">
+          <HintPath>C:\Program Files\Autodesk\Revit 2022\RevitAPIUI.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="AtomRevitAPI_2022">
+          <HintPath>P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\02_REVIT_MANAGER\Extensions\AtomRevitAPI_2022.dll</HintPath>
+        </Reference>
+        <Reference Include="AdWindows">
+          <HintPath>C:\Program Files\Autodesk\Revit 2022\AdWindows.dll</HintPath>
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="AtomConnector.cs" />
+    <Compile Include="Commands\CommandAvailability.cs" />
+    <Compile Include="Models\AtomFloorBuilder.cs" />
+    <Compile Include="Models\AtomFloorType.cs" />
+    <Compile Include="Models\AtomItemBase.cs" />
+    <Compile Include="Models\AtomLevel.cs" />
+    <Compile Include="Models\AtomFloorComparer.cs" />
+    <Compile Include="Models\AtomLevelNameComparer.cs" />
+    <Compile Include="Models\AtomRoom.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\AtomFloor.cs" />
+    <Compile Include="Models\Guids.cs" />
+    <Compile Include="Models\RoomNumbersOptionsType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Revit\RevitData.cs" />
+    <Compile Include="Revit\RevitDataReader.cs" />
+    <Compile Include="Revit\RevitDataWriter.cs" />
+    <Compile Include="Revit\RevitModelChecker.cs" />
+    <Compile Include="Commands\AtomRoomList.cs" />
+    <Compile Include="Services\AtomFloorListService.cs" />
+    <Compile Include="Services\Logger.cs" />
+    <Compile Include="Services\Monitoring.cs" />
+    <Compile Include="UserSettings\AtomUserSettings.cs" />
+    <Compile Include="UserSettings\AtomUserSettingsService.cs" />
+    <Compile Include="ViewModels\BaseVM.cs" />
+    <Compile Include="ViewModels\UndefinedFloorsVM.cs" />
+    <Compile Include="Views\FloorItemDataTemplateSelector.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UndefinedFloorsBox.xaml.cs">
+      <DependentUpon>UndefinedFloorsBox.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.3</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UndefinedFloorsBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\AtomRoomList_16x16.png" />
+    <Resource Include="resources\AtomRoomList_32x32.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+			if not exist "$(SolutionDir)bin" mkdir "$(SolutionDir)bin"
+			copy /y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)bin\$(TargetName).dll"
+			copy /y "$(TargetDir)$(TargetName).dll" "P:\03_БИБЛИОТЕКА\Revit_5_ПСМ\Скрипты C#\01_Плагины (dll)\01_REVIT_DEVELOPMENT\AtomRoomList\$(TargetName).dll"
+		</PostBuildEvent>
+  </PropertyGroup>
+</Project>
